@@ -1,3 +1,10 @@
+''' -----------------
+    Left mouse Click To select object 
+    Click middle mouse button to clear selection 
+'''
+
+
+
 import cv2
 import numpy as np
 
@@ -24,14 +31,12 @@ cv2.setMouseCallback("Window", mouseEvnt)
 
 cam = cv2.VideoCapture(0)
 
-#first loop
-
-#mask = np.zeros_like(frame)
 
 while True:
     _, frame = cam.read()
     
 
+    # Checking Condition if mouse is click for tracking or not
     if k == 1:
         
         if once == 0:
@@ -49,10 +54,10 @@ while True:
                                 criteria=(cv2.TERM_CRITERIA_EPS |cv2.TERM_CRITERIA_COUNT,
                                         15, 0.08)
                                                     )
-        cv2.circle(frame, (int(new_pts.ravel()[0]), int(new_pts.ravel()[1])), 2, (0, 255, 0), 2)
+        cv2.circle(frame, (int(new_pts.ravel()[0]), int(new_pts.ravel()[1])), 20, (0, 255, 0), 2)
         cv2.imshow("Window", frame)
-        #print(( new_pts.ravel()[0], new_pts.ravel()[1]), ix, iy)
-        old_gray = new_gray.copy()
+
+        old_gray = new_gray.copy()    
         old_pts = new_pts.copy()
 
     cv2.imshow("Window", frame)
