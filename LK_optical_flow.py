@@ -13,6 +13,7 @@ cv2.setMouseCallback("Window", mouseEvnt)
 
 cam = cv2.VideoCapture(0)
 
+#first loop
 
 while True:
     _, frame = cam.read()
