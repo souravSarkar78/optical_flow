@@ -59,7 +59,16 @@ while True:
         current_points = (int(new_pts.ravel()[0]), int(new_pts.ravel()[1]))
         cv2.circle(frame, current_points, 20, (0, 255, 0), 2)
 
-        
+        #print(current_points)
+
+        cropimg = frame[current_points[1]-150:current_points[1]+150, current_points[0]-150:current_points[0]+150]
+
+        print( current_points , cropimg.shape)
+
+        try: 
+            cv2.imshow("cropimg", cropimg)
+        except:
+            k = 0
 
         old_gray = new_gray.copy()    
         old_pts = new_pts.copy()

@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-ix, iy, k = 200, 200, 1
+ix, iy, k = 0, 0, 1
 def mouseEvnt(event, x, y, flag ,param):
     global ix, iy, k
     if event == cv2.EVENT_LBUTTONDOWN:
