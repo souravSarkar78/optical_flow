@@ -9,6 +9,9 @@ import cv2
 import numpy as np
 from numpy.core.fromnumeric import cumprod
 
+maxCropX = 150
+maxCropY = 150
+
 ix, iy, k = 0, 0, 0
 old_pts = np.array([[ix, iy]], dtype="float32").reshape(-1, 1, 2)
 once = 0
@@ -32,6 +35,10 @@ cv2.setMouseCallback("Window", mouseEvnt)
 
 cam = cv2.VideoCapture(0)
 
+width  = cam.get(3)
+height = cam.get(4)
+
+print(height, width)
 
 while True:
     _, frame = cam.read()
@@ -59,15 +66,40 @@ while True:
         current_points = (int(new_pts.ravel()[0]), int(new_pts.ravel()[1]))
         cv2.circle(frame, current_points, 20, (0, 255, 0), 2)
 
-        #print(current_points)
+        maxCropX1 = 150
+        maxCropX2 = 150
+        maxCropY1 = 150
+        maxCropY2 = 150
+        maxCropX_offset = 0
+        maxCropY_offset = 0
 
-        cropimg = frame[current_points[1]-150:current_points[1]+150, current_points[0]-150:current_points[0]+150]
+        # Correcting X axis cropping value
 
-        print( current_points , cropimg.shape)
+        if (width - current_points[0]) <=maxCropX2:
+            maxCropX2 = int((width - current_points[0]))
+            maxCropX1 = int(maxCropX1 + (maxCropX1-maxCropX2))
+
+        elif (current_points[0]) <=maxCropX1:
+            maxCropX1 = int(current_points[0])
+            maxCropX2 = int(maxCropX2 + (maxCropX2 - current_points[0]))
+
+
+        if (height - current_points[1]) <= maxCropY2:
+            maxCropY2 = int((height - current_points[1]))
+            maxCropY1 = int(maxCropY1 + (maxCropY1-maxCropY2))
+        elif (current_points[1]) <=maxCropY1:
+            maxCropY1 = int(current_points[1])
+            maxCropY2 = int(maxCropY2 + (maxCropY2 - current_points[1]))
+
+        
+        cropimg = frame[current_points[1]-(maxCropY1) : current_points[1]+(maxCropY2), current_points[0]-maxCropX1 :  current_points[0]+maxCropX2]
+
+        #print(current_points , cropimg.shape, maxCropY_offset, maxCropY-maxCropY_offset)
 
         try: 
             cv2.imshow("cropimg", cropimg)
         except:
+            cv2.destroyWindow("cropimg")
             k = 0
 
         old_gray = new_gray.copy()    
